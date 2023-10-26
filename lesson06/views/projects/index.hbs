@@ -9,16 +9,26 @@
         <th>Due Date</th>
         <th>Course</th>
         <th>Status</th>
+        <th></th>
     </thead>
     <tbody>
         {{!-- Retrieve all projects and loop --}}
         {{#each dataset}}
         <tr>
             <td>{{this.name}}</td>
-            <td>{{this.dueDate}}</td>
+            {{!-- Use the hbs helper function to format the date accordingly --}}
+            <td>{{toShortDate this.dueDate}}</td>
             <td>{{this.course}}</td>
             <td>{{this.status}}</td>
-            {{!-- TODO: UPDATE and DELETE buttons --}}
+            {{!-- UPDATE and DELETE buttons --}}
+            <td>
+                <a href="/projects/edit/{{this._id}}" class="btn btn-primary">Edit</a>
+                <a
+                    href="/projects/delete/{{this._id}}"
+                    onclick="return confirmDeletion()"
+                    class="btn btn-danger"
+                >Delete</a>
+            </td>
         </tr>
         {{/each}}
     </tbody>
