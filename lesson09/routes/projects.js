@@ -15,6 +15,7 @@ router.get("/", async (req, res, next) => {
   res.render("projects/index", {
     title: "Project Tracker",
     dataset: projects,
+    user: req.user,
   });
 });
 // GET /projects/add
@@ -23,6 +24,7 @@ router.get("/add", async (req, res, next) => {
   res.render("projects/add", {
     title: "Add a New Project",
     courses: courseList,
+    user: req.user,
   });
 });
 
@@ -59,6 +61,7 @@ router.get("/edit/:_id", async (req, res, next) => {
     title: "Edit Project Info",
     project: projectData,
     courses: courseList,
+    user: req.user,
   });
 });
 

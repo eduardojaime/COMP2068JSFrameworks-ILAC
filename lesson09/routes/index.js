@@ -5,8 +5,9 @@ const passport = require("passport");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.render("index", { title: "Express", user: req.user });
 });
+
 // GET /login
 router.get("/login", (req, res, next) => {
   // res.render('login', { title: 'Login' });
@@ -15,7 +16,7 @@ router.get("/login", (req, res, next) => {
   // Clear messages
   req.session.messages = [];
   // Pass messages to view
-  res.render("login", { title: "Login", messages: messages });
+  res.render("login", { title: "Login", messages: messages, user: req.user });
 });
 
 // POST /login
@@ -31,7 +32,7 @@ router.post(
 
 // GET /register
 router.get("/register", (req, res, next) => {
-  res.render("register", { title: "Create a new account" });
+  res.render("register", { title: "Create a new account", user: req.user });
 });
 
 //POST /register
@@ -56,6 +57,13 @@ router.post("/register", (req, res, next) => {
       }
     }
   );
+});
+
+// GET /logout
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    res.redirect("/login");
+  });
 });
 
 module.exports = router;
