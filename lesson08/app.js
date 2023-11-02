@@ -3,17 +3,21 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+// Router Objects
 var indexRouter = require("./routes/index");
 var projectsRouter = require("./routes/projects");
 var coursesRouter = require("./routes/courses");
 // var usersRouter = require('./routes/users');
-
 // Import MongoDB and Configuration modules
 var mongoose = require("mongoose");
 var configs = require("./configs/globals");
 // HBS Helper Methods
 var hbs = require("hbs");
+// Import passport and session modules
+var passport = require('passport');
+var session = require('express-session');
+// Import user model
+var User = require('./models/user');
 // Express App Object
 var app = express();
 
@@ -26,6 +30,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+// Configure passport module https://www.npmjs.com/package/express-session
+app.use(session({
+  secret: 's2021pr0j3ctTracker',
+  resave: false,
+  saveUninitialized: false
+}));
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+// Link passport to the user model
+passport.use(User.createStrategy());
+// Set passport to write/read user data to/from session object
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 // Routing Configuration
 app.use("/", indexRouter);
 app.use("/projects", projectsRouter);
