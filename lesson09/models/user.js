@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 const plm = require('passport-local-mongoose');
 
 var dataSchemaObj = {
-    username: String,
-    password: String
+    username: { type: String },
+    password: { type: String },
+    // add fields to handle oauth authenticated users
+    oauthId: { type: String }, // id value to identify this user in the third-party system
+    oauthProvider: { type: String }, // what auth provider was used? Github, google, etc.
+    created: { type: Date }, // keeps track of when user was created
 }
 var userSchema = new mongoose.Schema(dataSchemaObj);
 // Use passport-local-mongoose to indicate this is a special authentication model
