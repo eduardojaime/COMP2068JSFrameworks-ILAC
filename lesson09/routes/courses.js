@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Course = require("../models/course");
+const AuthenticationMiddleware = require("../extensions/authentication");
 
 // GET /Courses/
 router.get("/", async (req, res, next) => {
@@ -9,12 +10,12 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET /Courses/Add
-router.get("/add", (req, res, next) => {
+router.get("/add", AuthenticationMiddleware, (req, res, next) => {
   res.render("courses/add", { title: "Add a new Course", user: req.user });
 });
 
 // POST /Courses/Add
-router.post("/add", async (req, res, next) => {
+router.post("/add", AuthenticationMiddleware, async (req, res, next) => {
   let newCourse = new Course({
     name: req.body.name,
     code: req.body.code,
